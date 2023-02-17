@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="CPP_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/desktop/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/engine/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/esp-wrover-kit/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/esp32-c6-devkit/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/esp32-s2-kaluga/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/esp32-s2-usb-otg/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/esp32-s3-box/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/esp32-s3-usb-otg/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/m5stack-core2/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/m5stack-fire/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/wasm/src" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/target" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

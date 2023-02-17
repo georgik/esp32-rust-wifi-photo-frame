@@ -1,0 +1,22 @@
+[workspace]
+
+# Set explicit resolver to "2" to avoid problems with std/no_std projects.
+resolver = "2"
+
+members = [
+    "desktop",
+    "esp-wrover-kit",
+    # ESP32-C6 does not have WiFi driver yet
+    #    "esp32-c6-devkit",
+    # Temporarily disabled, because of problem in riscv dependency
+    #"esp32-c3-devkit-rust",
+    "esp32-s2-kaluga",
+    "esp32-s2-usb-otg",
+    "esp32-s3-usb-otg",
+    "esp32-s3-box",
+    "m5stack-core2",
+    "m5stack-fire",
+    "engine",
+    "wasm"
+]
+

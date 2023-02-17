@@ -1,0 +1,16 @@
+[package]
+name = "esp32_rust_wifi_photo_frame-engine"
+version = "0.2.0"
+edition = "2021"
+
+[dependencies]
+embedded-graphics = "0.7"
+embedded-graphics-framebuf = "0.2.0"
+tinybmp = "0.4.0"
+rand = { version = "0.8.5", default-features = false }
+rand_chacha = { version = "0.3.1", default-features = false }
+heapless = { version = "0.7.14", default-features = false }
+
+[features]
+std = []
+wasm = [ "std" ]
