@@ -273,21 +273,28 @@ fn main() -> ! {
 
     // Disable the RTC and TIMG watchdog timers
     let mut rtc = Rtc::new(peripherals.RTC_CNTL);
-    let timer_group0 = TimerGroup::new(peripherals.TIMG0, &clocks);
-    let mut wdt0 = timer_group0.wdt;
-    let timer_group1 = TimerGroup::new(peripherals.TIMG1, &clocks);
-    let mut wdt1 = timer_group1.wdt;
+    // let timer_group0 = TimerGroup::new(peripherals.TIMG0, &clocks);
+    // let mut wdt0 = timer_group0.wdt;
+    // let timer_group1 = TimerGroup::new(peripherals.TIMG1, &clocks);
+    // let mut wdt1 = timer_group1.wdt;
 
     #[cfg(feature = "esp32c3")]
     rtc.swd.disable();
     #[cfg(feature = "xtensa-lx-rt")]
     rtc.rwdt.disable();
 
-    wdt0.disable();
-    wdt1.disable();
+    // wdt0.disable();
+    // wdt1.disable();
+
+
+        use hal::timer::TimerGroup;
+        let timg1 = TimerGroup::new(peripherals.TIMG1, &clocks);
+        initialize(timg1.timer0, Rng::new(peripherals.RNG), &clocks).unwrap();
 
     let mut delay = Delay::new(&clocks);
     let (wifi_interface, controller) = esp_wifi::wifi::new(WifiMode::Sta);
+
+    let timer_group0 = TimerGroup::new(peripherals.TIMG0, &clocks);
     embassy::init(&clocks, timer_group0.timer0);
 
     println!("About to initialize the SPI LED driver");
@@ -478,9 +485,9 @@ fn main() -> ! {
     #[cfg(any(feature = "imu_controls"))]
     let icm = Icm42670::new(bus.acquire_i2c(), Address::Primary).unwrap();
 
-    let mut rng = Rng::new(peripherals.RNG);
+    // let mut rng = Rng::new(peripherals.RNG);
     let mut seed_buffer = [0u8; 32];
-    rng.read(&mut seed_buffer).unwrap();
+    // rng.read(&mut seed_buffer).unwrap();
     let mut data = [Rgb565::BLACK; 320 * 240];
 
 
