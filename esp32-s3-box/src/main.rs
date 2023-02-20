@@ -16,7 +16,7 @@ use esp_backtrace as _;
 use esp_println::logger::init_logger;
 use esp_println::println;
 use esp_wifi::initialize;
-use esp_wifi::wifi::{WifiController, WifiDevice, WifiEvent, WifiState};
+use esp_wifi::wifi::{WifiController, WifiDevice, WifiEvent, WifiMode, WifiState};
 
 #[global_allocator]
 static ALLOCATOR: esp_alloc::EspHeap = esp_alloc::EspHeap::empty();
@@ -287,7 +287,7 @@ fn main() -> ! {
     wdt1.disable();
 
     let mut delay = Delay::new(&clocks);
-    let (wifi_interface, controller) = esp_wifi::wifi::new();
+    let (wifi_interface, controller) = esp_wifi::wifi::new(WifiMode::Sta);
     embassy::init(&clocks, timer_group0.timer0);
 
     println!("About to initialize the SPI LED driver");
@@ -487,7 +487,7 @@ fn main() -> ! {
     let config = Config::Dhcp(Default::default());
 
     let seed = 1234; // very random, very secure seed
-
+    println!("Singleton");
     // Init network stack
     let stack = &*singleton!(Stack::new(
         wifi_interface,
@@ -495,20 +495,24 @@ fn main() -> ! {
         singleton!(StackResources::<3>::new()),
         seed
     ));
-
+    println!("Executor");
     let executor = EXECUTOR.init(Executor::new());
+    println!("Connection");
     executor.run(|spawner| {
         spawner.spawn(connection(controller)).ok();
+        println!("Spawning Net Task");
         spawner.spawn(net_task(&stack)).ok();
+        println!("Spawning Task");
         spawner.spawn(task(&stack)).ok();
+        println!("Spawning finished");
     });
 
-
+    println!("FrameBuf");
 
     let fbuf = FrameBuf::new(&mut data, 320, 240);
     let spritebuf = SpriteBuf::new(fbuf);
     let engine = Engine::new(spritebuf, Some(seed_buffer));
-
+    println!("Universe");
     let mut universe = Universe::new(icm, Some(seed_buffer), engine);
     universe.initialize();
 
