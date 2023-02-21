@@ -221,7 +221,7 @@ async fn task(stack: &'static Stack<WifiDevice>) {
 
         socket.set_timeout(Some(embassy_net::SmolDuration::from_secs(10)));
 
-        let remote_endpoint = (Ipv4Address::new(142, 250, 185, 115), 80);
+        let remote_endpoint = (Ipv4Address::new(194, 160, 218, 10), 80);
         println!("connecting...");
         let r = socket.connect(remote_endpoint).await;
         if let Err(e) = r {
@@ -233,7 +233,7 @@ async fn task(stack: &'static Stack<WifiDevice>) {
         loop {
             use embedded_io::asynch::Write;
             let r = socket
-                .write_all(b"GET / HTTP/1.0\r\nHost: www.mobile-j.de\r\n\r\n")
+                .write_all(b"GET /scr/small_lbreakout2.jpg HTTP/1.0\r\nHost: games.linux.sk\r\n\r\n")
                 .await;
             if let Err(e) = r {
                 println!("write error: {:?}", e);
@@ -250,7 +250,12 @@ async fn task(stack: &'static Stack<WifiDevice>) {
                     break;
                 }
             };
-            println!("{}", core::str::from_utf8(&buf[..n]).unwrap());
+            use tinyqoi::Qoi;
+            use embedded_graphics::{prelude::*, image::Image};
+            let qoi = Qoi::new(&buf).unwrap();
+            // println!("{}", core::str::from_utf8(&buf[..n]).unwrap());
+            // Image::new(&qoi, Point::zero()).draw(&mut display).unwrap();
+
         }
         Timer::after(Duration::from_millis(3000)).await;
     }
@@ -287,9 +292,9 @@ fn main() -> ! {
     // wdt1.disable();
 
 
-        use hal::timer::TimerGroup;
-        let timg1 = TimerGroup::new(peripherals.TIMG1, &clocks);
-        initialize(timg1.timer0, Rng::new(peripherals.RNG), &clocks).unwrap();
+    use hal::timer::TimerGroup;
+    let timg1 = TimerGroup::new(peripherals.TIMG1, &clocks);
+    initialize(timg1.timer0, Rng::new(peripherals.RNG), &clocks).unwrap();
 
     let mut delay = Delay::new(&clocks);
     let (wifi_interface, controller) = esp_wifi::wifi::new(WifiMode::Sta);
